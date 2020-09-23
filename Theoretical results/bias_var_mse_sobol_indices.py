@@ -62,7 +62,7 @@ def sobol_indices(pi,delt,kind='v_s',alpha=1,sig=0.3,lam='opt'):
     elif kind=='v_sli':
         f=sig**2*delt*(pi*(th_1-lam*th_2)-(tth_1-tlam*tth_2))
     else:
-        raise
+        f=0*pi
     return f
 
 
@@ -78,7 +78,77 @@ def sobol_indices(pi,delt,kind='v_s',alpha=1,sig=0.3,lam='opt'):
 
 
 
+
 ##plot figures
+
+
+
+def plot_variances(pi,lam,alpha=1,sig=0.3,seq='sil'):  
+    
+    ##plot Figure 1
+    
+    delt=np.concatenate([np.linspace(0.01,0.2,500),np.linspace(0.2,10,1000)])
+    pi=np.ones(1500)*pi
+    bias=bias_var_mse(pi,delt,'bias',alpha,sig,lam)
+    v_l=sobol_indices(pi,delt,'v_l',alpha,sig,lam)
+    v_s=sobol_indices(pi,delt,'v_s',alpha,sig,lam)
+    v_i=sobol_indices(pi,delt,'v_i',alpha,sig,lam)
+    v_li=sobol_indices(pi,delt,'v_li',alpha,sig,lam)
+    v_sl=sobol_indices(pi,delt,'v_sl',alpha,sig,lam)
+    v_si=sobol_indices(pi,delt,'v_si',alpha,sig,lam)
+    v_sli=sobol_indices(pi,delt,'v_sli',alpha,sig,lam)
+    var=v_s+v_i+v_sl+v_si+v_sli
+    mse=var+bias
+    if len(seq)==3:
+       
+        a_3=eval('v_'+seq[2])
+        try:
+            a_2=eval('v_'+seq[1:])+eval('v_'+seq[1])
+        except:
+            a_2=eval('v_'+seq[2:0:-1])+eval('v_'+seq[1])
+        a_1=var-a_2-a_3
+
+        lw=2 ##set the linewidth
+
+
+        plt.gcf().subplots_adjust(bottom=0.15)
+        plt.plot(delt,mse,label=r'$MSE$',linestyle='-',linewidth=lw)
+        plt.plot(delt,bias,label=r'$Bias^2$',linestyle='--',linewidth=lw)
+        
+
+        allcolor=[0,0,0]
+        alllinestyle=[0,0,0]
+        dic2={'l':('red','-.'),'s':('green',(0,(3,1,1,1,1,1))),'i':('purple',(0,(1,1)))}
+
+        plt.plot(delt,a_1,label=r'$\Sigma_{}^{}$'.replace('_{}^{}','_{'+seq+'}^{'+seq[0]+'}'),color=dic2[seq[0]][0],linestyle=dic2[seq[0]][1],linewidth=lw)
+        plt.plot(delt,a_2,label=r'$\Sigma_{}^{}$'.replace('_{}^{}','_{'+seq+'}^{'+seq[1]+'}'),color=dic2[seq[1]][0],linestyle=dic2[seq[1]][1],linewidth=lw) 
+        plt.plot(delt,a_3,label=r'$\Sigma_{}^{}$'.replace('_{}^{}','_{'+seq+'}^{'+seq[2]+'}'),color=dic2[seq[2]][0],linestyle=dic2[seq[2]][1],linewidth=lw)  
+        #plt.plot(delt,a_1,label=r'$\Sigma_{label}$',color='red',linestyle='-.')
+        #plt.plot(delt,a_2,label=r'$\Sigma_{sample}$',color='green',linestyle=(0,(3,1,1,1,1,1)))
+        #plt.plot(delt,a_3,label=r'$\Sigma_{init}$',color='purple',linestyle=(0,(1,1)))
+    else:
+        plt.plot(delt,v_s,label=r'$V_s$')
+        plt.plot(delt,v_i,label=r'$V_i$')
+        plt.plot(delt,v_sl,label=r'$V_{sl}$')
+        plt.plot(delt,v_si,label=r'$V_{si}$')
+        plt.plot(delt,v_sli,label=r'$V_{sil}$')
+    plt.legend(fontsize=16,ncol=2)
+    plt.xlabel(r'$\mathbb{\delta}$',fontsize=15)
+    plt.grid(linestyle='dotted')
+    plt.tick_params(labelsize=15)
+    #plt.show()
+    plt.savefig('./user_figures/vars_'+seq+'.png')
+    plt.close()
+#plot_variances(0.8,0.01,alpha=1,sig=0.3,seq='lsi')   ##'lis' , 'sli'  
+
+
+
+
+
+
+
+
+
 
 
 def plot_decomp(kind='var',alpha=1,sig=0.3,lam='opt',plot='2d'):   
@@ -137,51 +207,7 @@ def plot_decomp(kind='var',alpha=1,sig=0.3,lam='opt',plot='2d'):
 
 
 
-def plot_variances(pi,lam,alpha=1,sig=0.3,seq='sil'):  
-    
-    ##plot Figure 1
-    
-    delt=np.concatenate([np.linspace(0.01,0.2,500),np.linspace(0.2,10,1000)])
-    pi=np.ones(1500)*pi
-    bias=bias_var_mse(pi,delt,'bias',alpha,sig,lam)
-    v_l=sobol_indices(pi,delt,'v_l',alpha,sig,lam)
-    v_s=sobol_indices(pi,delt,'v_s',alpha,sig,lam)
-    v_i=sobol_indices(pi,delt,'v_i',alpha,sig,lam)
-    v_li=sobol_indices(pi,delt,'v_li',alpha,sig,lam)
-    v_sl=sobol_indices(pi,delt,'v_sl',alpha,sig,lam)
-    v_si=sobol_indices(pi,delt,'v_si',alpha,sig,lam)
-    v_sli=sobol_indices(pi,delt,'v_sli',alpha,sig,lam)
-    var=v_s+v_i+v_sl+v_si+v_sli
-    mse=var+bias
-    if len(seq)==3:
-       
-        a_3=eval('v_'+seq[2])
-        try:
-            a_2=eval('v_'+seq[1:])+eval('v_'+seq[1])
-        except:
-            a_2=eval('v_'+seq[2:0:-1])+eval('v_'+seq[1])
-        a_1=var-a_2-a_3
-        plt.plot(delt,mse,label=r'$MSE$',linestyle='-')
-        plt.plot(delt,bias,label=r'$Bias^2$',linestyle='--')
-        plt.plot(delt,a_1,label=r'$\Sigma_{}^{}$'.replace('_{}^{}','_{'+seq+'}^{'+seq[0]+'}'),color='red',linestyle='-.')
-        plt.plot(delt,a_2,label=r'$\Sigma_{}^{}$'.replace('_{}^{}','_{'+seq+'}^{'+seq[1]+'}'),color='green',linestyle=(0,(3,1,1,1,1,1))) 
-        plt.plot(delt,a_3,label=r'$\Sigma_{}^{}$'.replace('_{}^{}','_{'+seq+'}^{'+seq[2]+'}'),color='purple',linestyle=(0,(1,1)))  
-        #plt.plot(delt,a_1,label=r'$\Sigma_{label}$',color='red',linestyle='-.')
-        #plt.plot(delt,a_2,label=r'$\Sigma_{sample}$',color='green',linestyle=(0,(3,1,1,1,1,1)))
-        #plt.plot(delt,a_3,label=r'$\Sigma_{init}$',color='purple',linestyle=(0,(1,1)))
-    else:
-        plt.plot(delt,v_s,label=r'$V_s$')
-        plt.plot(delt,v_i,label=r'$V_i$')
-        plt.plot(delt,v_sl,label=r'$V_{sl}$')
-        plt.plot(delt,v_si,label=r'$V_{si}$')
-        plt.plot(delt,v_sli,label=r'$V_{sil}$')
-    plt.legend(fontsize=14,ncol=2)
-    plt.xlabel(r'$\mathbb{\delta}$')
-    plt.grid(linestyle='dotted')
-    #plt.show()
-    plt.savefig('./user_figures/vars_'+seq+'.png')
-    plt.close()
-#plot_variances(0.8,0.01,alpha=1,sig=0.3,seq='lsi')   ##'lis'   
+
 
 
 
