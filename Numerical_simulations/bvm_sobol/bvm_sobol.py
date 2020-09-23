@@ -37,8 +37,6 @@ def bias_var_mse(pi,delt,kind='var',alpha=1,sig=0.3,lam='opt'):
     elif kind=='mse':
         c=1-pi+(sig/alpha)**2
         f=alpha**2*(1-pi+ga*c*th_1+(lam-delt*c)*lam*pi*th_2)
-    else:
-        raise
     return f
 
 def sobol_indices(pi,delt,kind='var',alpha=1,sig=0.3,lam='opt'):
@@ -70,7 +68,7 @@ def sobol_indices(pi,delt,kind='var',alpha=1,sig=0.3,lam='opt'):
     elif kind=='v_sli':
         f=sig**2*delt*(pi*(th_1-lam*th_2)-(tth_1-tlam*tth_2))
     else:
-        raise
+        f=0*pi
     return f
 
 def gen_orth(p,d):   ##generate W
