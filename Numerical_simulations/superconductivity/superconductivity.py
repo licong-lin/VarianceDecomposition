@@ -166,12 +166,15 @@ def plot_fig_10(filename='record'):   ##plot figure 10
     samplenum=1000
     with open(os.path.join(cur_dir,filename,'sample_{}_lam_{}_repetitions_{}_sep_{}.txt'.format(samplenum,lam,repetitions,sep)),'rb') as file:
         all_record=pickle.load(file)
-    plt.errorbar(all_pi,all_record[0,:,:].mean(1),all_record[0,:,:].std(1),label='MSE',fmt='-',marker='.',markersize=5,capsize=1,)
-    plt.errorbar(all_pi,all_record[2,:,:].mean(1),all_record[2,:,:].std(1),label=r'$Bias^2$',fmt='-',marker='.',markersize=5,capsize=1.5)
-    plt.errorbar(all_pi,all_record[1,:,:].mean(1),all_record[1,:,:].std(1),label='Var',fmt='-',marker='.',markersize=5,capsize=1,c='C2')
-    plt.legend(fontsize=14)
-    plt.xlabel(r'$\pi$')
+    lw=2
+    plt.errorbar(all_pi,all_record[0,:,:].mean(1),all_record[0,:,:].std(1),label='MSE',fmt='-',marker='.',markersize=5,capsize=1,linewidth=lw)
+    plt.errorbar(all_pi,all_record[2,:,:].mean(1),all_record[2,:,:].std(1),label=r'$Bias^2$',fmt='-',marker='.',markersize=5,capsize=1.5,linewidth=lw)
+    plt.errorbar(all_pi,all_record[1,:,:].mean(1),all_record[1,:,:].std(1),label='Var',fmt='-',marker='.',markersize=5,capsize=1,c='C2',linewidth=lw)
+    plt.legend(fontsize=15)
+    plt.gcf().subplots_adjust(bottom=0.15)
+    plt.xlabel(r'$\pi$',fontsize=20)
     plt.grid(linestyle='dotted')
+    plt.tick_params(labelsize=15)
     #plt.show()
 
     plt.savefig(os.path.join(cur_dir,rel_path2,'sample_{}_lam_{}_repetitions_{}_sep_{}.png'.format(samplenum,lam,repetitions,sep)))
@@ -200,32 +203,34 @@ def plot_fig_8_9(pi_list,sam_list,kind,filename='record'):
         s2=all_record[5,:,:]+all_record[4,:,:]   #\Sigma^i_{is}
 
         
-        
+        lw=1.5
         if kind=='fig_8':
-            plt.errorbar(samplenum,all_record[0,:,:].mean(1),all_record[0,:,:].std(1),label='MSE',fmt='-',marker='.',markersize=5,capsize=1)
-            plt.errorbar(samplenum,all_record[2,:,:].mean(1),all_record[2,:,:].std(1),label=r'$Bias^2$',fmt='-',marker='.',markersize=5,capsize=1.5)
-            plt.errorbar(samplenum,all_record[1,:,:].mean(1),all_record[1,:,:].std(1),label='Var',fmt='-',marker='.',markersize=5,capsize=1,c='C2')
+            plt.errorbar(samplenum,all_record[0,:,:].mean(1),all_record[0,:,:].std(1),label='MSE',fmt='-',marker='.',markersize=5,capsize=1,lw=lw)
+            plt.errorbar(samplenum,all_record[2,:,:].mean(1),all_record[2,:,:].std(1),label=r'$Bias^2$',fmt='-',marker='.',markersize=5,capsize=1.5,lw=lw)
+            plt.errorbar(samplenum,all_record[1,:,:].mean(1),all_record[1,:,:].std(1),label='Var',fmt='-',marker='.',markersize=5,capsize=1,c='C2',lw=lw)
         
         elif kind=='fig_9_left':
-            plt.errorbar(samplenum,all_record[3,:,:].mean(1),all_record[3,:,:].std(1),label=r'$V_s$',fmt='-',marker='.',markersize=5,capsize=1)
-            plt.errorbar(samplenum,all_record[4,:,:].mean(1),all_record[4,:,:].std(1),label=r'$V_i$',fmt='-',marker='.',markersize=5,capsize=1.5)
-            plt.errorbar(samplenum,s0.mean(1),s0.std(1),label='Rest',fmt='-',marker='.',markersize=5,capsize=1.5)
+            plt.errorbar(samplenum,all_record[3,:,:].mean(1),all_record[3,:,:].std(1),label=r'$V_s$',fmt='-',marker='.',markersize=5,capsize=1,lw=lw)
+            plt.errorbar(samplenum,all_record[4,:,:].mean(1),all_record[4,:,:].std(1),label=r'$V_i$',fmt='-',marker='.',markersize=5,capsize=1.5,lw=lw)
+            plt.errorbar(samplenum,s0.mean(1),s0.std(1),label='Rest',fmt='-',marker='.',markersize=5,capsize=1.5,lw=lw)
         
         elif kind=='fig_9_middle':
-            plt.errorbar(samplenum,all_record[1,:,:].mean(1),all_record[1,:,:].std(1),label='Var',fmt='-',marker='.',markersize=5,capsize=1,c='C2')
-            plt.errorbar(samplenum,s1.mean(1),s1.std(1),label=r'$\Sigma^{s}_{si}$',fmt='-',marker='.',markersize=5,capsize=1.5,c='C3')
-            plt.errorbar(samplenum,all_record[4,:,:].mean(1),all_record[4,:,:].std(1),label=r'$\Sigma^{i}_{si}$',fmt='-',marker='.',markersize=5,capsize=1.5,c='C4')
+            plt.errorbar(samplenum,all_record[1,:,:].mean(1),all_record[1,:,:].std(1),label='Var',fmt='-',marker='.',markersize=5,capsize=1,c='C2',lw=lw)
+            plt.errorbar(samplenum,s1.mean(1),s1.std(1),label=r'$\Sigma^{s}_{si}$',fmt='-',marker='.',markersize=5,capsize=1.5,c='C3',lw=lw)
+            plt.errorbar(samplenum,all_record[4,:,:].mean(1),all_record[4,:,:].std(1),label=r'$\Sigma^{i}_{si}$',fmt='-',marker='.',markersize=5,capsize=1.5,c='C4',lw=lw)
         
         elif kind=='fig_9_right': 
-            plt.errorbar(samplenum,all_record[1,:,:].mean(1),all_record[1,:,:].std(1),label='Var',fmt='-',marker='.',markersize=5,capsize=1,c='C2')
-            plt.errorbar(samplenum,all_record[3,:,:].mean(1),all_record[3,:,:].std(1),label=r'$\Sigma^{s}_{is}$',fmt='-',marker='.',markersize=5,capsize=1.5,c='C3')
-            plt.errorbar(samplenum,s2.mean(1),s2.std(1),label=r'$\Sigma^{i}_{is}$',fmt='-',marker='.',markersize=5,capsize=1.5,c='C4')
+            plt.errorbar(samplenum,all_record[1,:,:].mean(1),all_record[1,:,:].std(1),label='Var',fmt='-',marker='.',markersize=5,capsize=1,c='C2',lw=lw)
+            plt.errorbar(samplenum,all_record[3,:,:].mean(1),all_record[3,:,:].std(1),label=r'$\Sigma^{s}_{is}$',fmt='-',marker='.',markersize=5,capsize=1.5,c='C3',lw=lw)
+            plt.errorbar(samplenum,s2.mean(1),s2.std(1),label=r'$\Sigma^{i}_{is}$',fmt='-',marker='.',markersize=5,capsize=1.5,c='C4',lw=lw)
         
 
         plt.legend(fontsize=23)
-        plt.xlabel('n')
+        plt.xlabel('n',fontsize=20)
         plt.xlim(0,210)
         plt.grid(linestyle='dotted')
+        plt.gcf().subplots_adjust(bottom=0.15)
+        plt.tick_params(labelsize=15)
         #plt.show()
         plt.savefig(os.path.join(cur_dir,rel_path2,'pi_{}_lam_{}_repetitions_{}_sep_{}_{}.png'.format(round(pi_list[i],2),lam,repetitions,sep,kind)))
         plt.close()
