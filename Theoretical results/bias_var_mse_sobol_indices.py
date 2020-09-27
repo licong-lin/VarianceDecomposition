@@ -108,7 +108,7 @@ def plot_variances(pi,lam,alpha=1,sig=0.3,seq='sil'):
             a_2=eval('v_'+seq[2:0:-1])+eval('v_'+seq[1])
         a_1=var-a_2-a_3
 
-        lw=2 ##set the linewidth
+        lw=2.5 ##set the linewidth
 
 
         plt.gcf().subplots_adjust(bottom=0.15)
@@ -132,10 +132,10 @@ def plot_variances(pi,lam,alpha=1,sig=0.3,seq='sil'):
         plt.plot(delt,v_sl,label=r'$V_{sl}$')
         plt.plot(delt,v_si,label=r'$V_{si}$')
         plt.plot(delt,v_sli,label=r'$V_{sil}$')
-    plt.legend(fontsize=16,ncol=2)
-    plt.xlabel(r'$\mathbb{\delta}$',fontsize=15)
+    plt.legend(fontsize=17,ncol=2)
+    plt.xlabel(r'$\mathbb{\delta}$',fontsize=20)
     plt.grid(linestyle='dotted')
-    plt.tick_params(labelsize=15)
+    plt.tick_params(labelsize=17)
     #plt.show()
     plt.savefig('./user_figures/vars_'+seq+'.png')
     plt.close()
