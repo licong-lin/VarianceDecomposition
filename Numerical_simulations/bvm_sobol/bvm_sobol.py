@@ -287,18 +287,19 @@ def plot_numerical_bvm_sobol(sobol=False,filename='record'):
             with open('./'+filename+'/record_'+items[k]+'_opt_lam.txt','rb') as file:    
                 x,mean,sd,theory,record=pickle.load(file)
             if t==1:
-                plt.errorbar(x,mean,sd,linestyle='--',linewidth=0.5,marker='.',markersize=3,
+                plt.errorbar(x,mean,sd,linestyle='--',linewidth=1,marker='.',markersize=7,
                 label='n'+r'${}$'.replace('{}',names[k]))
             else:
-                plt.plot(x,theory,label=r'${}$'.replace('{}',names[k]))
+                plt.plot(x,theory,label=r'${}$'.replace('{}',names[k]),linewidth=3)
     plt.grid(linestyle='dotted')
     if not sobol:
         plt.ylim(0,1.2)    
     else:
-        plt.ylim(0,0.25)  
-    plt.xlabel(r'$\mathbb{\delta}$')
+        plt.ylim(0,0.2)  
+    plt.xlabel(r'$\mathbb{\delta}$',fontsize=20)
     plt.legend(ncol=2,fontsize=14)
     plt.tick_params(labelsize=15)
+    plt.gcf().subplots_adjust(bottom=0.15)
     #plt.show()
 
     if sobol:
@@ -325,12 +326,13 @@ def plot_emse(filename='record'):
     ind=np.arange(0,length,2)
     x,mean,sd,theory,record=x[ind],mean[ind],sd[ind],theory[ind],record[:,ind]
     plt.errorbar(x,mean,sd,
-    label='nMSE')
-    plt.plot(x,theory,label='MSE') 
+    label='nMSE',linewidth=2)
+    plt.plot(x,theory,label='MSE',linewidth=2) 
     plt.grid(linestyle='dotted')
-    plt.xlabel(r'$\mathbb{\delta}$')
-    plt.legend(fontsize=15)
-    plt.tick_params(labelsize=15)
+    plt.xlabel(r'$\mathbb{\delta}$',fontsize=20)
+    plt.legend(fontsize=20)
+    plt.tick_params(labelsize=17)
+    plt.gcf().subplots_adjust(bottom=0.15)
     #plt.show()
     
     plt.savefig('./user_figures/numerical_mse_opt.png')  
@@ -338,7 +340,7 @@ def plot_emse(filename='record'):
 
 
 ##plot Figure 6(left)
-#plot_emse('record')  ##'user_record'
+##plot_emse('record')  ##'user_record'
         
 
 
