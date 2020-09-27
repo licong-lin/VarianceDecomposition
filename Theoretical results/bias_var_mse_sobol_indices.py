@@ -108,7 +108,7 @@ def plot_variances(pi,lam,alpha=1,sig=0.3,seq='sil'):
             a_2=eval('v_'+seq[2:0:-1])+eval('v_'+seq[1])
         a_1=var-a_2-a_3
 
-        lw=2.5 ##set the linewidth
+        lw=3 ##set the linewidth
 
 
         plt.gcf().subplots_adjust(bottom=0.15)
