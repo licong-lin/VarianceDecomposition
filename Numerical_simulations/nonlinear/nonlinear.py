@@ -164,12 +164,13 @@ def plot_emse(filename='record'):
     length=x.shape[0]
     ind=np.arange(0,length,2)
     x,mean,sd,theory,record=x[ind],mean[ind],sd[ind],theory[ind],record[:,ind]
-    plt.errorbar(x,mean,sd,label='nMSE')
-    plt.plot(x,theory,label='MSE') 
+    plt.errorbar(x,mean,sd,label='nMSE',linewidth=2)
+    plt.plot(x,theory,label='MSE',linewidth=2) 
     plt.grid(linestyle='dotted')
-    plt.xlabel(r'$\mathbb{\delta}$')
-    plt.legend(fontsize=14)
-
+    plt.xlabel(r'$\mathbb{\delta}$',fontsize=20)
+    plt.legend(fontsize=20)
+    plt.tick_params(labelsize=17)
+    plt.gcf().subplots_adjust(bottom=0.15)
     #plt.show()
     
     plt.savefig('./user_figures/numerical_mse_lam_0.01_nl.png') 
