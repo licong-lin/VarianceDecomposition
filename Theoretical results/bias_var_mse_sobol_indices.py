@@ -220,7 +220,8 @@ def plot_one_dim(kind='mse',alpha=1,sig=0.1,lam='opt',plot=['1',0.9]):
     i=0
     num=2000
     pi=np.linspace(0,1.0,num)
-    delt=np.linspace(0.25,20,num)              
+    delt=np.linspace(0.25,20,num)  
+    lw=2.5            
     for x in plot[1:]:
 
         if plot[0]=='1':       ##1d plot, fix the first dim
@@ -229,18 +230,20 @@ def plot_one_dim(kind='mse',alpha=1,sig=0.1,lam='opt',plot=['1',0.9]):
             delt=np.ones(num)*x
         f=bias_var_mse(pi,delt,kind,alpha,sig,lam)
         if plot[0]=='1':
-            plt.plot(1/delt,f,label=str(r'$\pi=$')+str(x),linestyle=linestyle[i])
+            plt.plot(1/delt,f,label=str(r'$\pi=$')+str(x),linestyle=linestyle[i],lw=lw)
             i+=1
         else:
             plt.plot(pi,f,label=str(r'$\mathbb{\delta}=$')+str(x))
             plt.set_xlabel(r'$\pi$')
     if plot[0]=='1':
-        plt.xlabel(r'$1/\mathbb{\delta}$')
+        plt.xlabel(r'$1/\mathbb{\delta}$',fontsize=20)
     else:
-        plt.xlabel(r'$\pi$')
+        plt.xlabel(r'$\pi$',fontsize=20)
     plt.grid(linestyle='dotted')
-    plt.ylabel(r'${}$'.replace('{}',dic[kind]))
+    plt.ylabel(r'${}$'.replace('{}',dic[kind]),fontsize=20)
     plt.legend(fontsize=20)
+    plt.tick_params(labelsize=15)
+    plt.gcf().subplots_adjust(bottom=0.15)
     #plt.show()
     plt.savefig('./user_figures/'+kind+'_one_dim.png')
     plt.close()
