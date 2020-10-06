@@ -91,7 +91,7 @@ def compute(num_sample,num_X,num_init,pi,lam,sep):  ## calculate and record the 
 
 
 
-def calculate_bvm_sobol(num_sample,num_X,num_init,pi,lam,sep): 
+def calculate_bvm_anova(num_sample,num_X,num_init,pi,lam,sep): 
 
     
     outputs=compute(num_sample,num_X,num_init,pi,lam,sep)
@@ -136,7 +136,7 @@ def simulation(lam,sam_list,all_pi,sep,num_X=10,num_init=10,repetitions=10):
     for num_sample in sam_list:
         for i in range(len(all_pi)):
             for j in range(repetitions):
-                mse[i,j],var[i,j],bias[i,j],v_s[i,j],v_i[i,j],v_si[i,j]=calculate_bvm_sobol(num_sample,num_X,num_init,all_pi[i],lam,sep)
+                mse[i,j],var[i,j],bias[i,j],v_s[i,j],v_i[i,j],v_si[i,j]=calculate_bvm_anova(num_sample,num_X,num_init,all_pi[i],lam,sep)
 
         with open(os.path.join(cur_dir,'user_record','sample_{}_lam_{}_repetitions_{}_sep_{}.txt'.format(num_sample,lam,repetitions,sep)),'wb') as file:
             print(np.stack([mse,var,bias,v_s,v_i,v_si],0).shape)
