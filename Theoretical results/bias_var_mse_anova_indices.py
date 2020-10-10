@@ -20,8 +20,8 @@ def bias_var_mse(pi,delt,kind='var',alpha=1,sig=0.3,lam='opt'):
     if lam=='opt':      ##optimal lambda
         lam=delt*(1-pi+(sig/alpha)**2)
     ga=pi*delt
-    th_1=((-lam+ga-1)+((-lam+ga-1)**2+4*lam*ga)**0.5)/(2*lam*ga)
-    th_2=(ga-1)/(2*lam**2*ga)+((ga+1)*lam+(ga-1)**2)/(2*lam**2*ga*((-lam+ga-1)**2+4*lam*ga)**0.5)
+    th_1=theta_1(ga,lam)
+    th_2=theta_2(ga,lam)
 
     if kind=='bias':
         f=alpha**2*(1-pi+lam*pi*th_1)**2
@@ -30,7 +30,7 @@ def bias_var_mse(pi,delt,kind='var',alpha=1,sig=0.3,lam='opt'):
             th_1**2+lam*(lam-delt+ga)*th_2)+sig**2*ga*(th_1-lam*th_2)
     elif kind=='mse':
         c=1-pi+(sig/alpha)**2
-        f=alpha**2*(1-pi+ga*c*th_1+(lam-delt*c)*lam*pi*th_2)
+        f=alpha**2*(1-pi+ga*c*th_1+(lam-delt*c)*lam*pi*th_2)+sig**2
     return f
 
 
@@ -41,10 +41,13 @@ def anova_indices(pi,delt,kind='v_s',alpha=1,sig=0.3,lam='opt'):
     th_1=((-lam+ga-1)+((-lam+ga-1)**2+4*lam*ga)**0.5)/(2*lam*ga)
     th_2=(ga-1)/(2*lam**2*ga)+((ga+1)*lam+(ga-1)**2)/(2*lam**2*ga*((-lam+ga-1)**2+4*lam*ga)**0.5)
     
+    
     b0=pi
     b1=-((1+pi)*lam+(1-pi)*(1-ga))
     b2=lam*(lam+(1-pi)*(1-delt))
     tlam=(-b1+(b1**2-4*b0*b2)**0.5)/2/b0
+    ##tlam=lam+(1-pi)/(2*pi)*(lam+1-ga+((lam+ga-1)**2+4*lam)**0.5)
+
     tth_1=theta_1(delt,tlam)
     tth_2=theta_2(delt,tlam)
     
@@ -98,7 +101,7 @@ def plot_variances(pi,lam,alpha=1,sig=0.3,seq='sil'):
     v_si=anova_indices(pi,delt,'v_si',alpha,sig,lam)
     v_sli=anova_indices(pi,delt,'v_sli',alpha,sig,lam)
     var=v_s+v_i+v_sl+v_si+v_sli
-    mse=var+bias
+    mse=var+bias+sig**2
     if len(seq)==3:
        
         a_3=eval('v_'+seq[2])
@@ -132,7 +135,7 @@ def plot_variances(pi,lam,alpha=1,sig=0.3,seq='sil'):
         plt.plot(delt,v_sl,label=r'$V_{sl}$')
         plt.plot(delt,v_si,label=r'$V_{si}$')
         plt.plot(delt,v_sli,label=r'$V_{sil}$')
-    plt.legend(fontsize=17,ncol=2)
+    plt.legend(fontsize=15,ncol=2,loc='upper right')
     plt.xlabel(r'$\mathbb{\delta}$',fontsize=20)
     plt.grid(linestyle='dotted')
     plt.tick_params(labelsize=17)
@@ -202,7 +205,7 @@ def plot_decomp(kind='var',alpha=1,sig=0.3,lam='opt',plot='2d'):
     #plot_decomp(kind,alpha=1,sig=0.3,lam=0.01,plot='2d')
 
 #for kind in ['var','bias','mse']:   ## 3-dim wireframe (Figure 2)
-    #plot_decomp(kind,alpha=1,sig=0.3,lam='opt',plot='3d')
+    #plot_decomp(kind,alpha=1,sig=0.5,lam='opt',plot='3d')
 
 
 
@@ -247,6 +250,7 @@ def plot_one_dim(kind='mse',alpha=1,sig=0.1,lam='opt',plot=['1',0.9]):
     #plt.show()
     plt.savefig('./user_figures/'+kind+'_one_dim.png')
     plt.close()
+
 
 #plot_one_dim(kind='mse',lam=0.01,plot=['1',0.3,0.5,0.7,0.9,0.95])
 
