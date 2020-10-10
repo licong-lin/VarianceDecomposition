@@ -37,13 +37,11 @@ def bvm_nl(pi,delt,kind='mse',v=1,mu=1,alpha=1,sig=0.3,lam='opt'):
     if kind=='bias':
         f=alpha**2*(1-pi*mu**2/v*(1-lam/v*th_1))**2
     elif kind=='mse':
-      
         f=alpha**2*(1-pi+delt*pi*(1-pi)*th_1+lam*pi/v*(lam*mu**2/v**2-delt*(1-pi))*th_2\
-            +pi*(v-mu**2)/v*th_2/th_1**2)+sig**2*ga*(th_1-lam/v*th_2)
-
+            +pi*(v-mu**2)/v*(ga*th_1+1-lam*ga/v*th_2))+sig**2*ga*(th_1-lam/v*th_2)
     elif kind=='var':
         f1=alpha**2*(1-pi+delt*pi*(1-pi)*th_1+lam*pi/v*(lam*mu**2/v**2-delt*(1-pi))*th_2\
-            +pi*(v-mu**2)/v*th_2/th_1**2)+sig**2*ga*(th_1-lam/v*th_2)
+            +pi*(v-mu**2)/v*(ga*th_1+1-lam*ga/v*th_2))+sig**2*ga*(th_1-lam/v*th_2)
         f2=alpha**2*(1-pi*mu**2/v*(1-lam/v*th_1))**2
         f=f1-f2
     return f
