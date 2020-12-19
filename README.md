@@ -2,7 +2,7 @@
 
 Code and figures for the paper 
 
-What causes the test error? Going beyond bias-variance via ANOVA
+## What causes the test error? Going beyond bias-variance via ANOVA
 
 https://arxiv.org/abs/2010.05170
 
