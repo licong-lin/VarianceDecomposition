@@ -11,5 +11,5 @@ By Licong Lin and Edgar Dobriban
 
 ![image](https://github.com/licong-lin/VarianceDecomposition/blob/master/Figures/fig_1,2,3,4/filled_figure.png)
 
-Figure represents MSE as a function of parametrization level pi and data aspect ratio delta in a two-layer neural net. 
+Figure represents ANOVA decomposition of the MSE as a function of parametrization data aspect ratio delta in a two-layer neural net. 
 See paper for details.
