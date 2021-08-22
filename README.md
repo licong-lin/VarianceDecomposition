@@ -1,4 +1,4 @@
-# VarianceDecomposition
+# ANOVA Decomposition of Test Error
 
 Code and figures for the paper 
 
